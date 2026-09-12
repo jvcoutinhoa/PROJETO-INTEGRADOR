@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP Support Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        bgDark: '#0A0E17',
+                        cardDark: '#121826',
+                        borderDark: '#1E293B',
+                        textPrimary: '#F8FAFC',
+                        textSecondary: '#94A3B8',
+                        primaryBlue: '#2563EB',
+                        primaryBlueHover: '#1D4ED8',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 font-sans antialiased relative">
+
+    <header class="absolute top-8 w-full max-w-2xl px-4 flex justify-between items-center z-10 hidden" id="mainHeader">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-primaryBlue flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(37,99,235,0.5)]">
+                JP
+            </div>
+            <div class="flex flex-col leading-tight">
+                <span class="font-bold text-lg text-white">Support</span>
+                <span class="text-xs text-primaryBlue tracking-widest font-semibold">TECH</span>
+            </div>
+        </div>
+        
+        <div class="relative flex items-center justify-between w-48" id="progressIndicator">
+            <div class="progress-line">
+                <div class="progress-line-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium z-10 transition-colors duration-300" id="step1Indicator">1</div>
+            <div class="w-8 h-8 rounded-full bg-cardDark border border-borderDark flex items-center justify-center text-sm font-medium text-textSecondary z-10 transition-colors duration-300" id="step2Indicator">2</div>
+            <div class="w-8 h-8 rounded-full bg-cardDark border border-borderDark flex items-center justify-center text-sm font-medium text-textSecondary z-10 transition-colors duration-300" id="step3Indicator">3</div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-2xl mt-16 relative z-10">
+
+        <section id="step0" class="step-container active flex-col items-center w-full max-w-md mx-auto">
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-12 h-12 rounded-xl bg-primaryBlue flex items-center justify-center font-bold text-xl text-white shadow-[0_0_20px_rgba(37,99,235,0.6)] mb-4">
+                    JP
+                </div>
+                <div class="flex flex-col leading-tight items-center mb-6">
+                    <span class="font-bold text-2xl text-white">Support</span>
+                    <span class="text-sm text-primaryBlue tracking-[0.2em] font-semibold">TECH</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2 text-center">Bem-vindo à JP Support Tech</h1>
+                <p class="text-textSecondary text-sm sm:text-base text-center">Insira seus dados para acessar o sistema de chamados.</p>
+            </div>
+
+            <div class="bg-cardDark border border-borderDark rounded-2xl p-6 sm:p-8 w-full shadow-lg">
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-textSecondary mb-2 tracking-wider uppercase">Apelido / Usuário</label>
+                        <input type="text" placeholder="Seu nome ou apelido" class="w-full bg-transparent border border-borderDark rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-primaryBlue transition-colors" id="loginName">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-textSecondary mb-2 tracking-wider uppercase">E-mail ou Login</label>
+                        <input type="email" placeholder="seu@email.com" class="w-full bg-transparent border border-borderDark rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-primaryBlue transition-colors" id="loginEmail">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-textSecondary mb-2 tracking-wider uppercase">Senha</label>
+                        <input type="password" placeholder="••••••••" class="w-full bg-transparent border border-borderDark rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-primaryBlue transition-colors" id="loginPassword">
+                    </div>
+                    
+                    <button onclick="goToStep(1)" class="w-full bg-primaryBlue hover:bg-primaryBlueHover text-white font-medium py-3 px-4 rounded-lg transition-all btn-glow mt-4 flex items-center justify-center gap-2">
+                        Entrar no Sistema <i class="fa-solid fa-arrow-right text-sm"></i>
+                    </button>
+                    
+                    <div class="text-center mt-6">
+                        <a href="#" class="text-sm text-textSecondary hover:text-white transition-colors">Esqueci minha senha</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-xs text-textSecondary opacity-50">© 2026 JP Support Tech · Todos os direitos reservados</p>
+            </div>
+        </section>
+
+        <section id="step1" class="step-container flex-col w-full">
+            <div class="mb-8 text-center sm:text-left">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">Detalhes do Equipamento e Serviço</h1>
+                <p class="text-textSecondary text-sm sm:text-base">Selecione o tipo de equipamento e os serviços desejados.</p>
+            </div>
+
+            <div class="bg-cardDark border border-borderDark rounded-2xl p-6 mb-6">
+                <label class="block text-xs font-semibold text-textSecondary mb-4 tracking-wider uppercase">Qual é o tipo do seu equipamento?</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="selectable-card border border-borderDark rounded-xl p-4 cursor-pointer flex flex-col gap-2" onclick="selectEquipment('PC de Trabalho', this)">
+                        <i class="fa-solid fa-desktop text-textSecondary text-xl mb-1"></i>
+                        <div><div class="text-sm font-medium text-white">PC de Trabalho</div><div class="text-xs text-textSecondary">Desktop</div></div>
+                    </div>
+                    <div class="selectable-card border border-borderDark rounded-xl p-4 cursor-pointer flex flex-col gap-2" onclick="selectEquipment('Notebook', this)">
+                        <i class="fa-solid fa-laptop text-textSecondary text-xl mb-1"></i>
+                        <div><div class="text-sm font-medium text-white">Notebook</div><div class="text-xs text-textSecondary">Portátil</div></div>
+                    </div>
+                    <div class="selectable-card border border-borderDark rounded-xl p-4 cursor-pointer flex flex-col gap-2" onclick="selectEquipment('All-in-One', this)">
+                        <i class="fa-solid fa-display text-textSecondary text-xl mb-1"></i>
+                        <div><div class="text-sm font-medium text-white">All-in-One</div><div class="text-xs text-textSecondary">Tudo em um</div></div>
+                    </div>
+                    <div class="selectable-card border border-borderDark rounded-xl p-4 cursor-pointer flex flex-col gap-2" onclick="selectEquipment('PC Gamer Básico', this)">
+                        <i class="fa-solid fa-gamepad text-textSecondary text-xl mb-1"></i>
+                        <div><div class="text-sm font-medium text-white">PC Gamer</div><div class="text-xs text-textSecondary">Básico</div></div>
+                    </div>
+                    <div class="selectable-card border border-borderDark rounded-xl p-4 cursor-pointer flex flex-col gap-2" onclick="selectEquipment('PC Gamer Avançado', this)">
+                        <i class="fa-solid fa-headset text-textSecondary text-xl mb-1"></i>
+                        <div><div class="text-sm font-medium text-white">PC Gamer</div><div class="text-xs text-textSecondary">Avançado</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-cardDark border border-borderDark rounded-2xl p-6 mb-6">
+                <label class="block text-xs font-semibold text-textSecondary mb-4 tracking-wider uppercase">Do que você precisa hoje?</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="servicesGrid">
+                    <!-- Injetado via JS -->
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-cardDark border border-borderDark rounded-2xl p-4">
+                <button onclick="goToStep(0)" class="text-textSecondary hover:text-white text-sm font-medium transition-colors py-2 px-4 w-full sm:w-auto text-left flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left text-xs"></i> Voltar
+                </button>
+                <button onclick="goToStep(2)" class="w-full sm:w-auto bg-primaryBlue hover:bg-primaryBlueHover text-white text-sm font-medium py-3 px-8 rounded-lg transition-all flex items-center justify-center gap-2">
+                    Prosseguir <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="step2" class="step-container flex-col w-full">
+            <div class="mb-8 text-center sm:text-left">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">Resumo do Atendimento</h1>
+                <p class="text-textSecondary text-sm sm:text-base">Confirme os detalhes e descreva o problema.</p>
+            </div>
+
+            <div class="bg-cardDark border border-borderDark rounded-2xl p-6 mb-6">
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold text-textSecondary mb-2 tracking-wider uppercase">Equipamento</label>
+                    <div class="flex items-center gap-3 text-white border-b border-borderDark pb-4">
+                        <i id="summaryEquipIcon" class="fa-solid fa-desktop text-textSecondary"></i>
+                        <span id="summaryEquipText" class="font-medium text-sm">Nenhum selecionado</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-textSecondary mb-3 tracking-wider uppercase">Serviços Selecionados</label>
+                    <div class="flex flex-wrap gap-2" id="summaryServicesList">
+                        <span class="text-sm text-textSecondary italic" id="noServicesMsg">Nenhum serviço selecionado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-cardDark border border-borderDark rounded-2xl p-6 mb-6">
+                <label class="block text-xs font-semibold text-textSecondary mb-4 tracking-wider uppercase">Conte o que está acontecendo com seu dispositivo</label>
+                <div class="relative">
+                    <textarea id="problemDescription" rows="5" class="w-full bg-transparent border border-borderDark rounded-xl p-4 text-sm text-white focus:outline-none focus:border-primaryBlue transition-colors resize-none" placeholder="Descreva os sintomas, mensagens de erro, etc..."></textarea>
+                    <div class="absolute bottom-4 left-4 text-xs text-textSecondary" id="charCount">0 caracteres</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-cardDark border border-borderDark rounded-2xl p-4">
+                <button onclick="goToStep(1)" class="text-textSecondary hover:text-white text-sm font-medium transition-colors py-2 px-4 w-full sm:w-auto text-left flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left text-xs"></i> Voltar
+                </button>
+                <button onclick="submitTicket()" class="w-full sm:w-auto bg-primaryBlue hover:bg-primaryBlueHover text-white text-sm font-medium py-3 px-8 rounded-lg transition-all btn-glow flex items-center justify-center gap-2">
+                    Abrir Chamado <i class="fa-solid fa-check text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="step3" class="step-container flex-col items-center justify-center w-full min-h-[60vh]">
+            <div class="flex flex-col items-center text-center animate-pulse-slow">
+                <div class="w-16 h-16 rounded-2xl bg-primaryBlue flex items-center justify-center text-white text-2xl shadow-[0_0_30px_rgba(37,99,235,0.6)] mb-6">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-3">Chamado Aberto!</h1>
+                <p class="text-textSecondary text-sm sm:text-base max-w-md mb-8 leading-relaxed">
+                    Sua solicitação foi registrada com sucesso. Em breve nossa equipe entrará em contato.
+                </p>
+                <div class="bg-cardDark border border-borderDark px-6 py-2 rounded-full flex items-center gap-2 shadow-inner">
+                    <span class="text-textSecondary text-sm font-medium">#JP-</span><span class="text-white font-bold" id="ticketNumber">1855</span>
+                </div>
+                
+                <button onclick="goToStep(0)" class="mt-12 text-sm text-textSecondary hover:text-white transition-colors">
+                    Voltar para o início
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+/* STREAMING_CHUNK:Base styles and background */
+body {
+background-color: #0A0E17;
+background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+background-size: 20px 20px;
+color: #F8FAFC;
+}
+
+/* STREAMING_CHUNK:Step visibility animations */
+.step-container {
+display: none;
+animation: fadeIn 0.3s ease-in-out;
+}
+
+.step-container.active {
+display: flex;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* STREAMING_CHUNK:Scrollbar styling */
+textarea::-webkit-scrollbar {
+width: 8px;
+}
+textarea::-webkit-scrollbar-track {
+background: #121826;
+border-radius: 4px;
+}
+textarea::-webkit-scrollbar-thumb {
+background: #1E293B;
+border-radius: 4px;
+}
+textarea::-webkit-scrollbar-thumb:hover {
+background: #334155;
+}
+
+/* STREAMING_CHUNK:Selectable card interactions */
+.selectable-card {
+transition: all 0.2s ease;
+}
+.selectable-card:hover {
+border-color: #3b82f6;
+background-color: rgba(59, 130, 246, 0.05);
+}
+.selectable-card.selected {
+border-color: #2563EB;
+background-color: rgba(37, 99, 235, 0.1);
+box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+/* STREAMING_CHUNK:Custom checkbox styling */
+.checkbox-custom {
+appearance: none;
+width: 1.25rem;
+height: 1.25rem;
+border: 1px solid #334155;
+border-radius: 0.25rem;
+background-color: transparent;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.checkbox-custom:checked {
+background-color: #2563EB;
+border-color: #2563EB;
+}
+
+.checkbox-custom:checked::after {
+content: '\f00c';
+font-family: 'Font Awesome 6 Free';
+font-weight: 900;
+color: white;
+font-size: 0.75rem;
+}
+
+/* STREAMING_CHUNK:Service item styling */
+.service-item {
+transition: all 0.2s;
+cursor: pointer;
+}
+.service-item:hover {
+background-color: rgba(255,255,255,0.02);
+}
+.service-item.selected {
+border-color: #2563EB;
+background-color: rgba(37, 99, 235, 0.05);
+}
+
+/* STREAMING_CHUNK:Button glow effect */
+.btn-glow {
+box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+}
+.btn-glow:hover {
+box-shadow: 0 0 25px rgba(37, 99, 235, 0.6);
+}
+
+/* STREAMING_CHUNK:Progress bar styling */
+.progress-line {
+position: absolute;
+top: 50%;
+left: 0;
+right: 0;
+height: 2px;
+background-color: #1E293B;
+z-index: 0;
+transform: translateY(-50%);
+}
+.progress-line-fill {
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+background-color: #2563EB;
+transition: width 0.3s ease;
+}
