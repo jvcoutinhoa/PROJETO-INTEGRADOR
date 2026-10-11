@@ -18,7 +18,6 @@ const availableServices = [
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     renderServices();
-    setupTextareaListener();
     updateProgressHeader(0);
 });
 
@@ -42,9 +41,9 @@ function goToStep(step) {
 
     updateProgressHeader(step);
 
-    // Pre-fill summary if going to step 2
+    // Ajusta o texto da IA no passo 2 (Chat) com o equipamento escolhido
     if (step === 2) {
-        updateSummary();
+        document.getElementById('chatEquipName').textContent = state.equipment || 'dispositivo';
     }
 }
 
@@ -141,87 +140,137 @@ function renderServices() {
     });
 }
 
-function updateSummary() {
-    // Update Equipment
-    const equipText = document.getElementById('summaryEquipText');
-    const equipIcon = document.getElementById('summaryEquipIcon');
+// ------ Lógica do Chat de Triagem da IA ------ //
+
+function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if(!text) return;
+
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Renderiza a Mensagem do Usuário
+    chatMessages.innerHTML += `
+        <div class="flex items-start gap-3 flex-row-reverse">
+            <div class="w-8 h-8 rounded-lg bg-[#1E293B] flex items-center justify-center text-white font-bold text-[10px] shrink-0 border border-[#334155]">VOCÊ</div>
+            <div class="bg-primaryBlue text-white text-sm p-3 rounded-2xl rounded-tr-none shadow-[0_0_10px_rgba(37,99,235,0.2)]">
+                ${text}
+            </div>
+        </div>
+    `;
     
-    if (state.equipment) {
-        equipText.textContent = state.equipment;
-        equipText.classList.remove('text-textSecondary', 'italic');
+    input.value = '';
+    state.description = text; // Salva a descrição no estado global
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Simula a IA "pensando" e respondendo
+    setTimeout(() => {
+        chatMessages.innerHTML += `
+            <div class="flex items-start gap-3 animate-[fadeIn_0.3s_ease-in-out]">
+                <div class="w-8 h-8 rounded-lg bg-primaryBlue flex items-center justify-center text-white font-bold text-[10px] shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.5)]">IA</div>
+                <div class="bg-borderDark text-white text-sm p-3 rounded-2xl rounded-tl-none border border-primaryBlue/30">
+                    <strong>Pré-diagnóstico concluído:</strong> Baseado no seu relato, já gerei um escopo técnico para o nosso atendimento. <br><br>
+                    Você já pode <strong>Abrir o Chamado</strong> clicando no botão abaixo para que nossa equipe assuma o caso!
+                </div>
+            </div>
+        `;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
         
-        // Set icon based on selection roughly
-        equipIcon.className = 'fa-solid text-textSecondary ' + 
-            (state.equipment.includes('Notebook') ? 'fa-laptop' : 
-             state.equipment.includes('Gamer') ? 'fa-gamepad' : 
-             state.equipment.includes('All-in') ? 'fa-display' : 'fa-desktop');
-    } else {
-        equipText.textContent = "Nenhum equipamento selecionado";
-        equipText.classList.add('text-textSecondary', 'italic');
-        equipIcon.className = 'fa-solid fa-circle-question text-textSecondary';
-    }
-
-    // Update Services
-    const servicesList = document.getElementById('summaryServicesList');
-    const noMsg = document.getElementById('noServicesMsg');
-    
-    // Clear current badges except the noMsg
-    Array.from(servicesList.children).forEach(child => {
-        if(child.id !== 'noServicesMsg') child.remove();
-    });
-
-    if (state.services.size > 0) {
-        noMsg.style.display = 'none';
-        state.services.forEach(service => {
-            const badge = document.createElement('span');
-            badge.className = 'bg-[rgba(37,99,235,0.1)] border border-primaryBlue/30 text-primaryBlue text-xs font-medium px-3 py-1.5 rounded-full';
-            badge.textContent = service;
-            servicesList.appendChild(badge);
-        });
-    } else {
-        noMsg.style.display = 'block';
-    }
+        // Habilita o botão de abrir chamado
+        const btn = document.getElementById('btnOpenTicket');
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        btn.classList.add('btn-glow');
+    }, 1500);
 }
 
-function setupTextareaListener() {
-    const textarea = document.getElementById('problemDescription');
-    const charCount = document.getElementById('charCount');
-    
-    textarea.addEventListener('input', function() {
-        state.description = this.value;
-        charCount.textContent = `${this.value.length} caracteres`;
-    });
+function handleChatEnter(e) {
+    if(e.key === 'Enter') sendChatMessage();
 }
 
-function submitTicket() {
-    // Basic validation
+async function submitTicket() {
+    // Validação básica
     if (!state.equipment) {
-        // Highlight missing equipment visually
-        document.getElementById('summaryEquipText').style.color = '#ef4444';
-        setTimeout(() => document.getElementById('summaryEquipText').style.color = '', 2000);
+        alert("Por favor, volte e selecione o tipo do seu equipamento no Passo 1.");
         return;
     }
 
-    // Generate random ticket number
-    const ticketNum = Math.floor(1000 + Math.random() * 9000);
-    document.getElementById('ticketNumber').textContent = ticketNum;
+    // Pega os dados digitados na tela de Login (Passo 0)
+    const nome = document.getElementById('loginName').value || 'Usuário Padrão';
+    const email = document.getElementById('loginEmail').value || 'usuario@email.com';
+    const senha = document.getElementById('loginPassword').value || '123456';
     
-    goToStep(3);
+    // Converte os serviços selecionados em um texto separado por vírgula
+    const servicosStr = Array.from(state.services).join(', ');
 
-    // Reset form fields after submission
-    setTimeout(() => {
-        document.getElementById('loginName').value = '';
-        document.getElementById('loginEmail').value = '';
-        document.getElementById('loginPassword').value = '';
-        state.equipment = '';
-        state.services.clear();
-        state.description = '';
-        document.getElementById('problemDescription').value = '';
-        document.getElementById('charCount').textContent = '0 caracteres';
-        
-        // Uncheck all services
-        document.querySelectorAll('.checkbox-custom').forEach(cb => cb.checked = false);
-        document.querySelectorAll('.service-item.selected').forEach(el => el.classList.remove('selected'));
-        document.querySelectorAll('.selectable-card.selected').forEach(el => el.classList.remove('selected'));
-    }, 1000);
+    // Gera o protocolo do chamado
+    const protocolo = '#JP-' + Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('ticketNumber').textContent = protocolo.replace('#JP-', '');
+
+    // Monta o "pacote" de dados para enviar ao backend
+    const ticketData = {
+        nome: nome,
+        email: email,
+        senha: senha,
+        equipamentoTipo: state.equipment,
+        servicos: servicosStr || "Nenhum serviço extra",
+        descricao: state.description || "Sem descrição",
+        protocolo: protocolo
+    };
+
+    try {
+        // Muda o texto do botão para dar feedback visual
+        const btn = document.getElementById('btnOpenTicket');
+        btn.disabled = true;
+        btn.innerHTML = 'Salvando... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+        // ENVIA OS DADOS PARA A API DO NOSSO SERVIDOR
+        const response = await fetch('/api/chamados', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ticketData)
+        });
+
+        if (response.ok) {
+            // Se o servidor confirmou que salvou no banco, vai para a tela de Sucesso
+            goToStep(3);
+
+            // Limpa o formulário após 1 segundo
+            setTimeout(() => {
+                document.getElementById('loginName').value = '';
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                state.equipment = '';
+                state.services.clear();
+                state.description = '';
+                
+                document.querySelectorAll('.checkbox-custom').forEach(cb => cb.checked = false);
+                document.querySelectorAll('.service-item.selected').forEach(el => el.classList.remove('selected'));
+                document.querySelectorAll('.selectable-card.selected').forEach(el => el.classList.remove('selected'));
+                
+                // Reseta o Chat da IA
+                document.getElementById('chatMessages').innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-primaryBlue flex items-center justify-center text-white font-bold text-[10px] shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.5)]">IA</div>
+                        <div class="bg-borderDark text-white text-sm p-3 rounded-2xl rounded-tl-none border border-[#2d3748]">
+                            Olá! Vi que você selecionou um(a) <strong id="chatEquipName" class="text-primaryBlue">Equipamento</strong>. Para eu criar um pré-diagnóstico para o técnico, por favor, me descreva detalhadamente o que está acontecendo.
+                        </div>
+                    </div>
+                `;
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('btn-glow');
+                btn.innerHTML = 'Finalizar Triagem e Abrir Chamado <i class="fa-solid fa-check text-xs"></i>';
+            }, 1000);
+        } else {
+            alert("Erro ao salvar o chamado no banco de dados.");
+            btn.innerHTML = 'Finalizar Triagem e Abrir Chamado <i class="fa-solid fa-check text-xs"></i>';
+            btn.disabled = false;
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro de conexão com o servidor. Verifique se o backend está rodando.");
+    }
 }
